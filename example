@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'remus'
+
+puts( Remus::PlainText.convert( '<p>Hello World!</p>' ) )
