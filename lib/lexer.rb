@@ -3,33 +3,44 @@ require 'lib/token'
 
 module Remus
 
-  class Lexer
+  class Lexer < StringScanner
     # Lexer that tokenizes the input
     
-    # The string to be tokenized
-    attr_accessor :string
     
-    def self.convert( string )
-      lexer = self.new( string )
-      
-      lexer.before
-      lexer.tokenize
-      lexer.after
-      
-      return lexer.output
+    def convert
+      @output << before
+      @output << main
+      @output << after
     end
     
     
+    # if the lexer wishes to output something prior to tokenizes
     def before
+      ''
+    end
+    
+    
+    def main
+      tokens = ''
+      tokens << tokenize until eos?
+      tokens
     end
     
     
     def tokenize
-      @output << Token.new( @string )
+      if peek(1) == '"'
+        scan /"/
+        p = pos - 1
+        scan_until /"/
+        return Token.new( string.slice(p, pos - p), :string )
+      end
+      getch
     end
     
     
+    # if the lexer wishes to output something after tokenizing
     def after
+      ''
     end
     
     
@@ -39,8 +50,8 @@ module Remus
     
     
     def initialize( string )
-      @string = string
       @output = String.new
+      super string
     end
     
     

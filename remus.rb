@@ -15,9 +15,11 @@ module Remus
     # aka PlainText
     require "lang/#{language}" unless Remus.const_defined?(class_name) 
     
-    # call convert on the lexer.
-    Remus.const_get(class_name).send('convert', string)
+    # instantiate the lexer.
+    lexer = Remus.const_get(class_name).new( string )
     
+    # call convert on the lexer.
+    lexer.convert
   end
   module_function :convert
   
