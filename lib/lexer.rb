@@ -5,7 +5,7 @@ module Remus
 
   class Lexer
     ##| abstract class
-    attr_reader :string
+    attr_accessor :string
     
     def self.convert( string )
       lexer = self.new( string )

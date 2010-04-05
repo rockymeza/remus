@@ -2,4 +2,5 @@ Remus is a syntax highlighter.
 
 Example:
 
-Remus.convert( 'Hello World!', :plain_text )
+Remus.convert( 'Hello World!' )
+Remus.convert( '<p>Hello World!</p>', :html )
