@@ -18,6 +18,8 @@ class Token < String
     case type
       when :string
         '<span class="string">' + @text + '</span>'
+      when :tag
+        '<span class="tag">' + @text + '</span>'
     end
   end
   

@@ -28,11 +28,23 @@ module Remus
     
     
     def tokenize
-      if peek(1) == '"'
-        scan /"/
-        p = pos - 1
-        scan_until /"/
-        return Token.new( string.slice(p, pos - p), :string )
+      case
+        when peek(1) == '<'
+          if check(/<\//)
+            scan /<\/\w+>/
+            return Token.new( matched, :tag )
+          elsif check(/<\w+>/)
+            scan /<\w+>/
+            return Token.new( matched, :tag)
+          else
+            scan /<\w+/
+            return Token.new( matched, :tag, :opener )
+          end
+        when check(/"/)
+          scan /"/
+          p = pos - 1
+          scan_until /"/
+          return Token.new( string.slice(p, pos - p), :string )
       end
       getch
     end

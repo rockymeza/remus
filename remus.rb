@@ -6,7 +6,6 @@ module Remus
   # Takes a string and converts it using a lexer specified by the
   # language parameter.
   def convert( string, language = :plain_text)
-  
     # convert the language symbol to a class_name
     # e.g. :plain_text => PlainText
     class_name = language.to_s.split('_').select {|w| w.capitalize! || w }.join('')
