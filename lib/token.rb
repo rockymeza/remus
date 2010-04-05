@@ -9,8 +9,16 @@ class Token < String
   attr_reader :special
   
   def initialize( text, type = :plain, special = nil )
-    super text
     @type = type
+    @text = text
+    super wrap
   end
-
+  
+  def wrap
+    case type
+      when :string
+        '<span class="string">' + @text + '</span>'
+    end
+  end
+  
 end
