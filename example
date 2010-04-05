@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'remus'
 
-puts( Remus.convert( '<p>Hello World!</p>' ) )
+puts( Remus.convert( '<p>Hello World!</p>', :html ) )

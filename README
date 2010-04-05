@@ -3,4 +3,6 @@ Remus is a syntax highlighter.
 Example:
 
 Remus.convert( 'Hello World!' )
+=> Hello World!
+
 Remus.convert( '<p>Hello World!</p>', :html )
