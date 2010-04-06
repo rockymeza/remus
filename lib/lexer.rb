@@ -30,9 +30,9 @@ module Remus
     def tokenize
       if @opened
         case
-          when peek(1) == '>'
+          when scan( />/ ) || scan( /\/>/ )
             @opened = false
-            return Token.new( ( scan( />/ ) ), :identifier )
+            return Token.new( matched, :identifier )
           when scan( /\w+=/ )
             return Token.new( matched, :attribute )
           when scan( /".*?"/ )
@@ -44,7 +44,9 @@ module Remus
       else
         case
           when peek(1) == '<'
-            if scan /<\/\w+>/
+            if scan /<!--.*?-->/
+              return Token.new( matched, :comment )
+            elsif scan /<\/\w+>/
               return Token.new( matched, :identifier )
             elsif scan /<\w+>/
               return Token.new( matched, :identifier)
