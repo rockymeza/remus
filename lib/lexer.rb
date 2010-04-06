@@ -28,30 +28,36 @@ module Remus
     
     
     def tokenize
-      case
-        when peek(1) == '<'
-          if scan /<\/\w+>/
-            return Token.new( matched, :tag )
-          elsif scan /<\w+>/
-            return Token.new( matched, :tag)
-          else
-            scan /<\w+/
-            @opened = true
-            return Token.new( matched, :tag )
-          end
-        when peek(1) == '>'
-          if @opened
+      if @opened
+        case
+          when peek(1) == '>'
             @opened = false
-            return Token.new( ( scan( />/ ) ), :tag )
-          end
-        when scan( /\w+=/ )
-          return Token.new( matched, :attribute ) if @opened
-          return Token.new( matched, :plain )
-        when scan( /".*?"/ )
-          return Token.new( matched, :string ) if @opened
-          return Token.new( matched, :plain )
+            return Token.new( ( scan( />/ ) ), :identifier )
+          when scan( /\w+=/ )
+            return Token.new( matched, :attribute )
+          when scan( /".*?"/ )
+            return Token.new( matched, :string )
+        else
+          scan /\s/
+          return Token.new( matched, :nocolor )
+        end
+      else
+        case
+          when peek(1) == '<'
+            if scan /<\/\w+>/
+              return Token.new( matched, :identifier )
+            elsif scan /<\w+>/
+              return Token.new( matched, :identifier)
+            else
+              scan /<\w+/
+              @opened = true
+              return Token.new( matched, :identifier )
+            end
+        else
+          scan /[^<]+/
+          return Token.new( matched )
+        end
       end
-      getch
     end
     
     
