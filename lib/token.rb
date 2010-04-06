@@ -28,5 +28,5 @@ class Token < String
   def yellow(text); colorize(text, "\e[33m"); end
   def attribute(text); colorize(text, "\e[34m"); end
   def plain(text); colorize(text, "\e[35m"); end
-  def cyan(text); colorize(text, "\e[36m"); end
+  def comment(text); colorize(text, "\e[36m"); end
 end
