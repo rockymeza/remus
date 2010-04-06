@@ -3,6 +3,6 @@ require 'remus'
 
 # timer
 start_time = Time.new.to_f
-puts( Remus.convert( '<p id="here">Hello World!</p>' ) )
+puts( Remus.convert( '<p id="here">Hello "World!"</p>' ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
