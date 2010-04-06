@@ -42,9 +42,12 @@ module Remus
         when peek(1) == '>'
           if @opened
             @opened = false
-            return Token.new( (scan />/), :tag )
+            return Token.new( ( scan( />/ ) ), :tag )
           end
-        when scan(/".*?"/)
+        when scan( /\w+=/ )
+          return Token.new( matched, :attribute ) if @opened
+          return Token.new( matched, :plain )
+        when scan( /".*?"/ )
           return Token.new( matched, :string ) if @opened
           return Token.new( matched, :plain )
       end
