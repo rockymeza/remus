@@ -15,8 +15,8 @@ module Remus
         # strings will match "...", '...'
         :string => { :on_open => /(["']).*?\1/ },
         
-        # identifier will match body, div#id, span.class, p#id.class, #id, .class
-        :identifier => { :on_closed => /<\/\w+>|<\/\w+>/, :opener => /<\w+/, :closer => />|\/>/ },
+        # identifier will match <p>, </p>, <br />, <div id="blah">
+        :identifier => { :on_closed => /<\/\w+>|<\/\w+>|<\w+\s\/>/, :opener => /<\w+/, :closer => />|\/>/ },
         
         # plains
         :plain => { :on_open => /\s+/, :on_close => /[^<]+/ }

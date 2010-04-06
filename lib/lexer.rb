@@ -36,33 +36,35 @@ module Remus
           if @opened
             
             if value[:closer].is_a? Regexp
+              if value[:on_open] && scan( value[:on_open] )
+                return t( key )
+              end
               if scan( value[:closer] )
                 @opened = false
                 return t( key )
               end
-            end
-          
-            if value[:on_open] && scan( value[:on_open] )
-              if value[:closer]
-                @opened = false
+            else
+              if value[:on_open] && scan( value[:on_open] )
+                @opened = false if value[:closer]
+                return t( key )
               end
-              return t( key )
             end
           
           else # else @opened
             
             if value[:opener].is_a? Regexp
+              if value[:on_closed] && scan( value[:on_closed] )
+                return t( key )
+              end
               if scan( value[:opener] )
                 @opened = true
                 return t( key )
               end
-            end
-            
-            if value[:on_closed] && scan( value[:on_closed] )
-              if value[:opener]
-                @opened = true
+            else
+              if value[:on_closed] && scan( value[:on_closed] )
+                @opened = true if value[:opener]
+                return t( key )
               end
-              return t( key )
             end
             
           end # end @opened
