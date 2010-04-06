@@ -20,6 +20,8 @@ class Token < String
         '<span class="string">' + @text + '</span>'
       when :tag
         '<span class="tag">' + @text + '</span>'
+    else
+      @text
     end
   end
   

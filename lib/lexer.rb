@@ -36,10 +36,17 @@ module Remus
             return Token.new( matched, :tag)
           else
             scan /<\w+/
-            return Token.new( matched, :tag, :opener )
+            @opened = true
+            return Token.new( matched, :tag )
+          end
+        when peek(1) == '>'
+          if @opened
+            @opened = false
+            return Token.new( (scan />/), :tag )
           end
         when scan(/".*?"/)
-          return Token.new( matched, :string )
+          return Token.new( matched, :string ) if @opened
+          return Token.new( matched, :plain )
       end
       getch
     end
