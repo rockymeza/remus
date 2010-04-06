@@ -18,7 +18,7 @@ module Remus
     lexer = Remus.const_get(class_name).new( string )
     
     # call convert on the lexer.
-    lexer.convert
+    lexer
   end
   module_function :convert
   

@@ -4,10 +4,10 @@ require 'lib/token'
 module Remus
 
   class Lexer < StringScanner
-    # Lexer that tokenizes the input
     
+    attr_accessor :tokens
     
-    def convert
+    def to_s
       @output << before
       @output << main
       @output << after
@@ -26,9 +26,55 @@ module Remus
       tokens
     end
     
+    def t( type = :plain )
+      return Token.new( matched, type )
+    end
     
     def tokenize
-      return Token.new( getch )
+      @tokens.each do | key, value |
+        if value.is_a? Hash
+          if @opened
+            
+            if value[:closer].is_a?(Regexp)
+              if scan( value[:closer] )
+                @opened = false
+                return t( key )
+              end
+            end
+          
+            if value[:on_open] && scan( value[:on_open] )
+              if value[:closer]
+                @opened = false
+              end
+              return t( key )
+            end
+          
+          else # else @opened
+            
+            if value[:opener].is_a?(Regexp)
+              if scan( value[:opener] )
+                @opened = true
+                return t( key )
+              end
+            end
+            
+            if value[:on_closed] && scan( value[:on_closed] )
+              if value[:opener]
+                @opened = true
+              end
+              return t( key )
+            end
+            
+          end # end @opened
+        else # else value.is_a? Hash
+          
+          if scan( value )
+            return t( key )
+          end
+          
+        end # end value.is_a? Hash
+      end
+      getch && t
     end
     
     
@@ -44,8 +90,11 @@ module Remus
     
     
     def initialize( string )
-      @output = String.new
       super string
+      @output = String.new
+      @tokens = {
+        :plain => /.*/
+      }
     end
     
     
