@@ -30,21 +30,16 @@ module Remus
     def tokenize
       case
         when peek(1) == '<'
-          if check(/<\//)
-            scan /<\/\w+>/
+          if scan /<\/\w+>/
             return Token.new( matched, :tag )
-          elsif check(/<\w+>/)
-            scan /<\w+>/
+          elsif scan /<\w+>/
             return Token.new( matched, :tag)
           else
             scan /<\w+/
             return Token.new( matched, :tag, :opener )
           end
-        when check(/"/)
-          scan /"/
-          p = pos - 1
-          scan_until /"/
-          return Token.new( string.slice(p, pos - p), :string )
+        when scan(/".*?"/)
+          return Token.new( matched, :string )
       end
       getch
     end
