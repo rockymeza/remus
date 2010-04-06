@@ -9,7 +9,7 @@ module Remus
         # comments will match <!-- ... -->
         :comment => /<!--.*?-->/,
         
-        # attributes will match color:, and ;
+        # attributes will match id=
         :attribute => { :on_open => /\w+=/ },
         
         # strings will match "...", '...'
