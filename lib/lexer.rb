@@ -35,7 +35,7 @@ module Remus
         if value.is_a? Hash
           if @opened
             
-            if value[:closer].is_a?(Regexp)
+            if value[:closer].is_a? Regexp
               if scan( value[:closer] )
                 @opened = false
                 return t( key )
@@ -51,7 +51,7 @@ module Remus
           
           else # else @opened
             
-            if value[:opener].is_a?(Regexp)
+            if value[:opener].is_a? Regexp
               if scan( value[:opener] )
                 @opened = true
                 return t( key )
