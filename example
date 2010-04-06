@@ -2,15 +2,35 @@
 require 'remus'
 
 # timer
-puts( 'Remus Test Run', '--------------------- Plain Text' )
+puts( 'Remus Test Run')
+
+puts('--------------------- Plain Text' )
 start_time = Time.new.to_f
 puts( Remus.convert( 'This is plain text' ) )
 end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s, '--------------------- HTML' )
+puts( 'Time: '+ (end_time - start_time).to_s)
 
+puts('--------------------- HTML' )
 start_time = Time.new.to_f
 puts( Remus.convert( '<!--This is HTML-->
 <p id="here">Hello "World!"</p><br />
-<span class="there more">Here\'s a new line</span>', :html ) )
+<span class=\'there more\'>Here\'s a new line</span>', :html ) )
 end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s, '---------------------' )
+puts( 'Time: '+ (end_time - start_time).to_s)
+
+puts('--------------------- CSS' )
+start_time = Time.new.to_f
+puts( Remus.convert( 'body, html {
+  color: #adf123;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* comment */
+div#id.class {
+  background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
+  width: 45px !important;/* comment */
+  height: 45%;
+}
+', :css ) )
+end_time = Time.new.to_f
+puts( 'Time: '+ (end_time - start_time).to_s)

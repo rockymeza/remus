@@ -22,11 +22,12 @@ class Token < String
     "#{color_code}#{text}\e[0m"
   end
 
-  def nocolor(text); text; end
+  def plain(text); text; end
   def identifier(text); colorize(text, "\e[31m"); end
   def string(text); colorize(text, "\e[32m"); end
-  def yellow(text); colorize(text, "\e[33m"); end
+  def punctuation(text); colorize(text, "\e[33m"); end
+  def keyword(text); colorize(text, "\e[1m\e[33m"); end
   def attribute(text); colorize(text, "\e[34m"); end
-  def plain(text); colorize(text, "\e[35m"); end
+  def number(text); colorize(text, "\e[35m"); end
   def comment(text); colorize(text, "\e[36m"); end
 end

@@ -1,40 +1,26 @@
 module Remus
   
   class Html < Lexer
-    
-    def tokenize
-      if @opened
-        case
-          when scan( />/ ) || scan( /\/>/ )
-            @opened = false
-            return Token.new( matched, :identifier )
-          when scan( /\w+=/ )
-            return Token.new( matched, :attribute )
-          when scan( /".*?"/ )
-            return Token.new( matched, :string )
-        else
-          scan /\s/
-          return Token.new( matched, :nocolor )
-        end
-      else
-        case
-          when peek(1) == '<'
-            if scan /<!--.*?-->/
-              return Token.new( matched, :comment )
-            elsif scan /<\/\w+>/
-              return Token.new( matched, :identifier )
-            elsif scan /<\w+>/
-              return Token.new( matched, :identifier)
-            else
-              scan /<\w+/
-              @opened = true
-              return Token.new( matched, :identifier )
-            end
-        else
-          scan /[^<]+/
-          return Token.new( matched )
-        end
-      end
+  
+    def initialize( string )
+      super string
+      
+      @tokens = {
+        # comments will match <!-- ... -->
+        :comment => /<!--.*?-->/,
+        
+        # attributes will match color:, and ;
+        :attribute => { :on_open => /\w+=/ },
+        
+        # strings will match "...", '...'
+        :string => { :on_open => /(["']).*?\1/ },
+        
+        # identifier will match body, div#id, span.class, p#id.class, #id, .class
+        :identifier => { :on_closed => /<\/\w+>|<\/\w+>/, :opener => /<\w+/, :closer => />|\/>/ },
+        
+        # plains
+        :plain => { :on_open => /\s+/, :on_close => /[^<]+/ }
+      }
     end
     
   end
