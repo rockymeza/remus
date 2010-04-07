@@ -34,3 +34,41 @@ div#id.class {
 ', :css ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
+
+puts('--------------------- HTML + CSS' )
+start_time = Time.new.to_f
+puts( Remus.convert( '<!--This is HTML with embedded CSS-->
+<p id="here">Hello "World!"</p><br />
+<span class=\'there more\'>Here\'s a new line</span>
+<style type="text/css">
+  body, html {
+    color: #adf123;
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  /* comment */
+  div#id.class {
+    background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
+    width: 45px !important;/* comment */
+    height: 45%;
+  }
+</style>
+<!--I repeated it for fun-->
+<p id="here">Hello "World!"</p><br />
+<span class=\'there more\'>Here\'s a new line</span>
+<style type="text/css">
+  body, html {
+    color: #adf123;
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  /* comment */
+  div#id.class {
+    background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
+    width: 45px !important;/* comment */
+    height: 45%;
+  }
+</style>
+', :html ) )
+end_time = Time.new.to_f
+puts( 'Time: '+ (end_time - start_time).to_s)

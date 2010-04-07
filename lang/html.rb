@@ -6,20 +6,25 @@ module Remus
       super string
       
       @tokens = {
-        # comments will match <!-- ... -->
+        # comment will match <!-- ... -->
         :comment => /<!--.*?-->/,
         
-        # attributes will match id=
+        # attribute will match id=
         :attribute => { :on_open => /\w+=/ },
         
-        # strings will match "...", '...'
+        # string will match "...", '...'
         :string => { :on_open => /(["']).*?\1/ },
         
         # identifier will match <p>, </p>, <br />, <div id="blah">
         :identifier => { :on_closed => /<\/\w+>|<\/\w+>|<\w+\s\/>/, :opener => /<\w+/, :closer => />|\/>/ },
         
-        # plains
+        # plain
         :plain => { :on_open => /\s+/, :on_close => /[^<]+/ }
+      }
+      
+      # subregions are for embedded languages like JS and CSS
+      @subregions = {
+        :css => /(<style.*?>)([\w\W]*?)(<\/style>)/
       }
     end
     
