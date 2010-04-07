@@ -4,18 +4,20 @@ class Token < String
   # e.g. :plain, :constant, :literal, :number, :keyword, etc.
   attr_reader :type
   
-  # A special would be relevant for something like an opening parentheses
-  # e.g. :opener, :closer
-  attr_reader :special
-  
-  def initialize( text, type = :plain, special = nil )
+  def initialize( text, type = :plain )
     @type = type
     @text = text
     super wrap
   end
   
   def wrap
-    send( @type, @text )
+    case @type
+      when :nocolor
+        puts 'asdfasdf'
+        @text.delete('@@@REMUSNOCOLOR@@@')
+    else
+      send( @type, @text )
+    end
   end
   
   def colorize(text, color_code)
