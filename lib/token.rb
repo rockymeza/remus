@@ -13,7 +13,6 @@ class Token < String
   def wrap
     case @type
       when :nocolor
-        puts 'asdfasdf'
         @text.delete('@@@REMUSNOCOLOR@@@')
     else
       send( @type, @text )
