@@ -44,8 +44,7 @@ module Remus
     end
       
     def tokenize
-      if scan( /@@@REMUSNOCOLOR@@@[\w\W]*?@@@REMUSNOCOLOR@@@/ )
-        puts 'asdfasd'
+      if scan( /@@@REMUSNOCOLOR@@@[\s\S]*?@@@REMUSNOCOLOR@@@/ )
         return t( :nocolor )
       end
       

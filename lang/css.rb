@@ -16,7 +16,7 @@ module Remus
         :punctuation => { :opener => /\{/, :closer => /\}/ },
         
         # attribute will match color:, and ;
-        :attribute => { :on_open => /[\w-]+:|;/ },
+        :attribute => { :on_open => /[\w-]+:|;/i },
         
         # string will match "...", '...', and url(...)
         :string => { :on_open => /(["']).*?\1|url\(.*?\)/i },
@@ -28,7 +28,7 @@ module Remus
         :identifier => { :on_closed => /[\w\.#]+/ },
         
         # plain
-        :plain => { :on_open => /[\w-]+/, :catch_all => /[,\s]+/ }
+        :plain => { :on_open => /[\w-]+/i, :catch_all => /[,\s]+/ }
       }
     end
     

@@ -25,7 +25,7 @@ module Remus
       # subregions are for embedded languages like JS and CSS
       # I know it's kind of a lame syntax to have to find three groups, but that's the only way I could get it to work
       @subregions = {
-        :css => /(<style.*?>)([\w\W]*?)(<\/style>)/i
+        :css => /(<style.*?>)([\s\S]*?)(<\/style>)/i
       }
     end
     
