@@ -13,13 +13,13 @@ module Remus
         :keyword => /!important|inherit/,
 
         # punctuation will match }
-        :punctuation => { :on_open => /\}/, :on_closed => /\{/, :opener => true, :closer => true },
+        :punctuation => { :opener => /\{/, :closer => /\}/ },
         
         # attribute will match color:, and ;
         :attribute => { :on_open => /[\w-]+:|;/ },
         
         # string will match "...", '...', and url(...)
-        :string => { :on_open => /(["']).*?\1|url\(.*?\)/ },
+        :string => { :on_open => /(["']).*?\1|url\(.*?\)/i },
         
         # number will match 12, 12px, 12em, 12%, #123asd, #fff
         :number => { :on_open => /[0-9\.\%]+(?:px|em)?{0,1}|#([a-f0-9]{6}|[a-f0-9]{3})/i },
