@@ -13,7 +13,7 @@ module Remus
         :keyword => /!important|inherit/,
 
         # punctuation will match }
-        :punctuation => { :on_open => /}/, :on_closed => /{/, :opener => true, :closer => true },
+        :punctuation => { :on_open => /\}/, :on_closed => /\{/, :opener => true, :closer => true },
         
         # attribute will match color:, and ;
         :attribute => { :on_open => /[\w-]+:|;/ },
