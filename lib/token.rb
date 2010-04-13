@@ -13,7 +13,8 @@ class Token < String
   def wrap
     case @type
       when :nocolor
-        @text.delete('@@@REMUSNOCOLOR@@@')
+        #@text.gsub('@@@REMUSNOCOLOR@@@', '')
+        @text
     else
       send( @type, @text )
     end
@@ -30,5 +31,7 @@ class Token < String
   def keyword(text); colorize(text, "\e[1m\e[33m"); end
   def attribute(text); colorize(text, "\e[34m"); end
   def number(text); colorize(text, "\e[35m"); end
+  def function(text); colorize(text, "\e[1m\e[35m"); end
   def comment(text); colorize(text, "\e[36m"); end
+  def operator(text); colorize(text, "\e[1m\e[36m"); end
 end

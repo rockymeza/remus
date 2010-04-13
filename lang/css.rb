@@ -7,7 +7,7 @@ module Remus
       
       @tokens = {
         # comment will match /* ... */
-        :comment => /\/\*.*\*\//,
+        :comment => /\/\*[\s\S]*?\*\//,
         
         # keyword
         :keyword => /!important|inherit/,

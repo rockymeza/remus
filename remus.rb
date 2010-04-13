@@ -19,9 +19,11 @@ module Remus
   
   
   def convert_from_file( file, language )
-    # TODO: make this work
-    # it should figure out the language automatically.
+    text = IO.read(file)
+    
+    Remus.convert( text, language)
   end
+  module_function :convert_from_file
   
   
   def classify( symbol )

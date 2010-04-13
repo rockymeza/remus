@@ -14,6 +14,11 @@ module Remus
     end
     
     
+    def dump
+      to_s.dump
+    end
+    
+    
     # if the lexer wishes to output something prior to tokenizes
     def before
       ''
@@ -28,7 +33,9 @@ module Remus
       tokens
     end
     
-    def t( type = :plain )
+    def t( type = :plain, *args )
+      if args.length == 1; return Token.new( args[0], type ); end
+      
       return Token.new( matched, type )
     end
     
@@ -50,43 +57,62 @@ module Remus
       
       @tokens.each do | key, value |
         if value.is_a? Hash
-          if @opened
-            
-            if value[:closer].is_a? Regexp
-              if value.has_key?( :on_open ) && scan( value[:on_open] )
-                return t( key )
+          if value.has_key?( :nestable )
+            if scan( value[:nestable][0] )
+              opener = matched
+              puts matched
+              original_pos = pos
+              
+              nestable_level = nestable_scan_until( value[:nestable] )
+              until nestable_level < 1 
+                nestable_level += nestable_scan_until( value[:nestable] )
               end
-              if scan( value[:closer] )
-                @opened = false
-                return t( key )
-              end
-            else
-              if value[:on_open] && scan( value[:on_open] )
-                @opened = false if value.has_key? :closer
-                return t( key )
-              end
+              
+              string[(pos-1)...(matched.length + (pos - 1))] = no_color( t( key ) )
+              
+              pos = original_pos
+              return t( key, opener )
             end
-          
-          else # else @opened
+          end
+          if value.keys & %w(on_open, on_close, opener, closer)
+            if @opened
+              
+              if value[:closer].is_a? Regexp
+                if value.has_key?( :on_open ) && scan( value[:on_open] )
+                  return t( key )
+                end
+                if scan( value[:closer] )
+                  @opened = false
+                  return t( key )
+                end
+              else
+                if value[:on_open] && scan( value[:on_open] )
+                  @opened = false if value.has_key? :closer
+                  return t( key )
+                end
+              end
             
-            if value[:opener].is_a? Regexp
-              if value.has_key?( :on_closed ) && scan( value[:on_closed] )
-                return t( key )
+            else # else @opened
+              
+              if value[:opener].is_a? Regexp
+                if value.has_key?( :on_closed ) && scan( value[:on_closed] )
+                  return t( key )
+                end
+                if scan( value[:opener] )
+                  @opened = true
+                  return t( key )
+                end
+              else
+                if value.has_key?( :on_closed ) && scan( value[:on_closed] )
+                  @opened = true if value.has_key? :opener
+                  return t( key )
+                end
               end
-              if scan( value[:opener] )
-                @opened = true
-                return t( key )
-              end
-            else
-              if value.has_key?( :on_closed ) && scan( value[:on_closed] )
-                @opened = true if value.has_key? :opener
-                return t( key )
-              end
+              
+            end # end @opened
+            if value.has_key?( :catch_all ) && scan( value[:catch_all] )
+              return t( key )
             end
-            
-          end # end @opened
-          if value.has_key?( :catch_all ) && scan( value[:catch_all] )
-            return t( key )
           end
         else # else value.is_a? Hash
           
@@ -110,6 +136,10 @@ module Remus
       super string
       @output = String.new
       @subregions = Hash.new
+    end
+    
+    
+    def nestable_scan_until( nestable )
     end
     
     

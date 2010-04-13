@@ -7,7 +7,7 @@ module Remus
       
       @tokens = {
         # comment will match <!-- ... -->
-        :comment => /<!--.*?-->/,
+        :comment => /<!--[\s\S]*?-->/,
         
         # attribute will match id=
         :attribute => { :on_open => /\w+=/ },
