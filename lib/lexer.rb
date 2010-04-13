@@ -23,6 +23,11 @@ module Remus
     end
     
     
+    def dump
+      to_s.dump
+    end
+    
+    
     # if the lexer wishes to output something prior to tokenizes
     def before
       ''
