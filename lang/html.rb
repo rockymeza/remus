@@ -6,20 +6,32 @@ module Remus
       super string
       
       @tokens = {
-        # comment will match <!-- ... -->
-        :comment => /<!--.*?-->/,
-        
-        # attribute will match id=
-        :attribute => { :on_open => /\w+=/ },
-        
-        # string will match "...", '...'
-        :string => { :on_open => /(["']).*?\1/ },
-        
-        # identifier will match <p>, </p>, <br />, <div id="blah">
-        :identifier => { :on_closed => /<\/\w+>|<\/\w+>|<\w+\s\/>/, :opener => /<\w+/, :closer => />|\/>/ },
-        
-        # plain
-        :plain => { :on_open => /\s+/, :on_close => /[^<]+/ }
+        :base => {
+          # comment will match <!-- ... -->
+          /<!--[\s\S]*?-->/ => [ :comment ],
+          
+          # identifier will match <p and open the :tag
+          /<\s*[a-z0-9]+\s/i => [ :identifier, :tag ],
+          
+          # identifier will match </p>, <br />
+          /<\/[a-z0-9]+>|<[a-z0-9]+\s\/>/ => [ :identifier ],
+          
+          # plain
+          /[^<&]+/ => [ :plain ]
+        },
+        :tag => {
+          # attribute will match id=
+          /\w+=/ => [ :attribute ],
+          
+          # string will match "...", '...'
+          /(["']).*?\1/ => [ :string ],
+          
+          # identifier will match > and close out
+          />/ => [ :identifier, :close ],
+          
+          # plain
+          /\s+/ => [ :plain ]
+        }
       }
       
       # subregions are for embedded languages like JS and CSS

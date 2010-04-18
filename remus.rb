@@ -39,7 +39,9 @@ module Remus
     def initialize( string )
       super string
       @tokens = {
-        :plain => /.*/
+        :base => {
+          /[\s\S]*/ => [ :plain ]
+        }
       }
     end
   
