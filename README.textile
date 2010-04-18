@@ -4,7 +4,7 @@ h2. It's gonna be pretty awesome.
 
 h3. Where did Remus come from?
 
-Remus was inspired by not wanting to do homework, the awesome Python syntax highglighter "pygments":http://pygments.org/, and it takes some ideas from the RubyGem "syntax":http://syntax.rubyforge.org/.
+Remus was inspired by not wanting to do homework, the awesome Python syntax highlighter "pygments":http://pygments.org/, and it takes some ideas from the RubyGem "syntax":http://syntax.rubyforge.org/.
 
 h3. Remus in action?
 
