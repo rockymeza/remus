@@ -5,23 +5,23 @@ module Remus
   # The main function.
   # Takes a string and converts it using a lexer specified by the
   # language parameter.
-  def convert( string, language = :plain_text)
+  def convert( string, language = :plain_text, options = {})
     class_name = Remus.classify( language )
     
     # require the language file unless the class_name is defined already
     # aka PlainText
-    require "lang/#{language}" unless Remus.const_defined?( class_name )
+    require "lang/#{language}" unless Remus::Lexer.const_defined?( class_name )
     
     # instantiate and return the lexer
-    lexer = Remus.const_get( class_name ).new( string ).convert
+    lexer = Remus::Lexer.const_get( class_name ).new( string, options ).convert
   end
   module_function :convert
   
   
-  def convert_from_file( file, language )
+  def convert_from_file( file, language, options = {} )
     text = IO.read(file)
     
-    Remus.convert( text, language)
+    Remus.convert( text, language, options)
   end
   module_function :convert_from_file
   
@@ -32,22 +32,6 @@ module Remus
     symbol.to_s.split('_').select {|w| w.capitalize! || w }.join('')
   end
   module_function :classify
-  
-  
-  # An empty Lexer class, basically returns the string untouched
-  # This is the default Lexer.
-  class PlainText < Lexer
-  
-    def initialize( string )
-      super string
-      @tokens = {
-        :base => [ {
-          /[\s\S]*/ => [ :plain ]
-        } ]
-      }
-    end
-  
-  end
   
   
 end
