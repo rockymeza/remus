@@ -1,6 +1,6 @@
 h1. Remus is a syntax highlighter.
 
-h2. It' s gonna be pretty awesome.
+h2. It's gonna be pretty awesome.
 
 h3. Where did Remus come from?
 
