@@ -48,7 +48,8 @@ module Remus
         if subregions = string.scan( regex )
           subregions.each do |subregion|
             new_subregion = Remus.convert( subregion[1], lang ).to_s
-            string.sub!( subregion[1], no_color( new_subregion ) )
+            #string.sub!( subregion[1], no_color( new_subregion ) )
+            string.sub!( subregion[1], new_subregion )
           end
         end
       end
@@ -62,27 +63,28 @@ module Remus
     def _tokenize( tokens )
       p = ''
       
-      if scan( /@@@REMUSNOCOLOR@@@[\s\S]*?@@@REMUSNOCOLOR@@@/ )
-        p << t( :nocolor )
-      end
+      #if scan( /@@@REMUSNOCOLOR@@@[\s\S]*?@@@REMUSNOCOLOR@@@/ )
+      #  p << t( :nocolor )
+      #end
       
-      tokens.each do | regexp, token |
+      tokens.merge( @tokens[:catch_all] || Hash.new ).each do | regexp, token |
+        token = [ token ] unless token.is_a? Array
+        
         if scan( regexp )
           p << t( token[0] )
           
           if token.length > 1
-            return [ p ] if token[1] == :close
+            return [ p, :close ] if token[1] == :close
             
             while a = _tokenize( @tokens[ token[1] ] )
-              if a.is_a? Array
-                p << a[0]
-                break
-              end
-              p << a
+              a = [ a ] unless a.is_a? Array
+              p << a[0]
+              break if a.length > 1 && a[1] == :close
             end
           end
         end
       end
+      getch && t if p == ''
       p
     end
     
@@ -100,9 +102,9 @@ module Remus
     end
     
     
-    def no_color( string )
-      return '@@@REMUSNOCOLOR@@@' + string + '@@@REMUSNOCOLOR@@@'
-    end
+    #def no_color( string )
+    #  return '@@@REMUSNOCOLOR@@@' + string + '@@@REMUSNOCOLOR@@@'
+    #end
   end
   
 end
