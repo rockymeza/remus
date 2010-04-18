@@ -8,29 +8,29 @@ module Remus
       @tokens = {
         :base => {
           # comment will match <!-- ... -->
-          /<!--[\s\S]*?-->/ => [ :comment ],
+          /<!--[\s\S]*?-->/ => :comment,
           
           # identifier will match </p>, <br />
-          /<\/[a-z0-9]+>|<[a-z0-9]+\s\/>/ => [ :identifier ],
+          /<\/[a-z0-9]+>|<[a-z0-9]+\s\/>/ => :identifier,
           
           # identifier will match <p and open the :tag
           /<\w+/ => [ :identifier, :tag ],
           
           # plain
-          /[^<&]+/ => [ :plain ]
+          /[^<&]+/ => :plain,
         },
         :tag => {
           # attribute will match id=
-          /\w+=/ => [ :attribute ],
+          /\w+=/ => :attribute,
           
           # string will match "...", '...'
-          /(["']).*?\1/ => [ :string ],
+          /(["']).*?\1/ => :string,
           
           # identifier will match > and close out
           />|\/>/ => [ :identifier, :close ],
           
           # plain
-          /\s+/ => [ :plain ]
+          /\s+/ => :plain,
         }
       }
       

@@ -19,7 +19,6 @@ puts( Remus.convert( '<!--This is HTML-->
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
 
-=begin
 puts('--------------------- CSS' )
 start_time = Time.new.to_f
 puts( Remus.convert( 'body, html {
@@ -30,8 +29,9 @@ puts( Remus.convert( 'body, html {
 /* comment */
 div#id.class {
   background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
-  width: 45px !important;/* comment */
+  width: 45px !important;
   height: 45%;
+  /* comment */
 }
 ', :css ) )
 end_time = Time.new.to_f
@@ -74,4 +74,3 @@ puts( Remus.convert( '<!--This is HTML with embedded CSS-->
 ', :html ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
-=end
