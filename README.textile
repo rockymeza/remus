@@ -1,6 +1,6 @@
 h1. Remus is a syntax highlighter.
 
-h2. It"s gonna be pretty awesome.
+h2. It' s gonna be pretty awesome.
 
 h3. Where did Remus come from?
 
@@ -20,24 +20,12 @@ What a wonderful yet oddly phrased question.  The basic syntax for Remus is: @Re
 @Remus.convert( '<p>This is HTML</p>', :html )
 =>@ &lt;span class=&quot;identifier&quot;&gt;&amp;lt;p&lt;/span&gt;&lt;span class=&quot;identifier&quot;&gt;&amp;gt;&lt;/span&gt;This is HTML&lt;span class=&quot;identifier&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
 
-@Remus.convert( 'color: #adf123;
-  font-family: "Courier New", Courier, monospace;
-}@
-
-@/*
-  multi-line comment
-  hahaha
- */ 
-div#id.class {
-  background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
-  width: 45px !important;
-  height: 45%;
-  /* comment */
-}', :css )@
-@=>@ ==&lt;span class=&quot;identifier&quot;&gt;color&lt;/span&gt;: &lt;span class=&quot;identifier&quot;&gt;#adf123&lt;/span&gt;;\n  &lt;span class=&quot;identifier&quot;&gt;font-family&lt;/span&gt;: &amp;quot;&lt;span class=&quot;identifier&quot;&gt;Courier&lt;/span&gt; &lt;span class=&quot;identifier&quot;&gt;New&lt;/span&gt;&amp;quot;, &lt;span class=&quot;identifier&quot;&gt;Courier&lt;/span&gt;, &lt;span class=&quot;identifier&quot;&gt;monospace&lt;/span&gt;;\n}\n\n&lt;span class=&quot;comment&quot;&gt;/*\n  multi-line comment\n  hahaha\n */&lt;/span&gt;\n&lt;span class=&quot;identifier&quot;&gt;div#id.class&lt;/span&gt; &lt;span class=&quot;punctuation&quot;&gt;{&lt;/span&gt;\n  &lt;span class=&quot;variable&quot;&gt;background:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;#00ff00&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;url('smiley.gif')&lt;/span&gt; no-repeat fixed center&lt;span class=&quot;variable&quot;&gt;;&lt;/span&gt;\n  &lt;span class=&quot;variable&quot;&gt;width:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;45px&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;!important&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;;&lt;/span&gt;\n  &lt;span class=&quot;variable&quot;&gt;height:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;45%&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;;&lt;/span&gt;\n  &lt;span class=&quot;comment&quot;&gt;/* comment */&lt;/span&gt;\n&lt;span class=&quot;punctuation&quot;&gt;}&lt;/span&gt;==
-
 h3. How to use Remus more ninja-ly?
 
 @Remus.convert( string, language, { :token_class => :sh } )@ will return output that is colorized for the terminal.
 
 Another feature that is "very exciting or effective":http://idioms.thefreedictionary.com/kick+ass is the embedded languages.  You can have CSS and JS inside of HTML or Language-X inside of Language-Y.
+
+h3. How to make Remus more awesome?
+
+You can add Lexers ( @lang/*.rb@ ) and Tokens ( @lib/tokens/*.rb@ ) to make Remus even smarter.  Follow the example of Html and Js to see how to make a Lexer.
