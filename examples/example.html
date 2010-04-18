@@ -1,0 +1,43 @@
+<!--This is HTML with embedded CSS-->
+<p id="here">Hello "World!"</p><br />
+<span class='there more'>Here's a new line</span>
+<style type="text/css">
+  body, html {
+    color: #adf123;
+    font-family: "Courier New", Courier, monospace;
+  }
+</style>
+<style>
+  /* comment */
+  div#id.class {
+    background: #00ff00 url('smiley.gif') no-repeat fixed center;
+    width: 45px !important;/* comment */
+    height: 45%;
+  }
+</style>
+<!--I repeated it for fun
+multiline comment!-->
+<p id="here">Hello "World!"</p><br />
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+//document.write("<h1>This is a heading</h1>");
+document.write("<p>This is a paragraph.</p>");
+document.write("<p>This is another paragraph.</p>");
+/*
+multi
+line
+comment
+*/
+var RecaptchaOptions = {
+      theme : 'custom'
+    };
+    $(document).ready(function(){
+      $("ul,ol").each(function(){
+        if ( ! $(this).parent(':first').hasClass("list") && $(this).parent(':first').attr('tagName').toLowerCase() != "li")
+        {
+          $(this).wrap(unescape('%3Cdiv class="list"%3E%3C/div%3E'));
+        }
+      });
+    });
+// ]]>
+</script>

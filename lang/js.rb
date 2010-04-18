@@ -2,13 +2,12 @@ module Remus
   
   class Js < Lexer
     
-    def initialize( string )
-      super string
-      
+    def setup
       @tokens = {
         :base => [ {
-          # comment will match /* ... */
-          /\/\*[\s\S]*?\*\/|\/\/.*/ => :comment,
+          # comment will match /* ... */ or // comment
+          /\/\*.*?\*\//m => :comment,
+          /\/\/.*/ => :comment,
           
           # keyword
           /if|else|end|true|false|var|function|&&|document|window|this|\|\|/ => :keyword,

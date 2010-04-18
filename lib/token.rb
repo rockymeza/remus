@@ -11,13 +11,13 @@ class Token < String
   end
   
   def wrap
-    #case @type
-    #  when :nocolor
-    #    @text.gsub('@@@REMUSNOCOLOR@@@', '')
-    #else
-    #  send( @type, @text )
-    #end
-    send( @type, @text )
+    case @type
+      when :nocolor
+        @text.gsub('@@@REMUSNOCOLOR@@@', '')
+    else
+      send( @type, @text )
+    end
+    #send( @type, @text )
   end
   
   def colorize(text, color_code)
