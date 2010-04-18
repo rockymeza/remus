@@ -6,35 +6,41 @@ module Remus
       super string
       
       @tokens = {
-        # comment will match /* ... */
-        :comment => /\/\*[\s\S]*?\*\/|\/\/.*/,
-        
-        # function
-        :function => { :nestable => [ /[a-z][a-z0-9_-]*\(|\$\(/i, /\)/ ] },
-        
-        # keyword
-        :keyword => /if|else|end|true|false|var|function|&&|document|window|this|\|\|/,
-
-        # punctuation will match }
-        :punctuation => /\(|\)|\{|\}/,
-        
-        # attribute will match color:, and ;
-        :attribute => /[\w_-]+:/i,
-        
-        # operator
-        :operator => /\+|-|\=|\?|:|\%/,
-        
-        # string will match "...", '...', and url(...)
-        :string => /(["']).*?\1/i,
-        
-        # number will match 12, 12px, 12em, 12%, #123asd, #fff
-        :number => /[0-9\.]+/i,
-        
-        # identifier will match body, div#id, span.class, p#id.class, #id, .class
-        #:identifier => { :on_closed => /[\w\.#]+/ },
-        
-        # plain
-        #:plain => { :on_open => /[\w-]+/i, :catch_all => /[,\s]+/ }
+        :base => [ {
+          # comment will match /* ... */
+          /\/\*[\s\S]*?\*\/|\/\/.*/ => :comment,
+          
+          # keyword
+          /if|else|end|true|false|var|function|&&|document|window|this|\|\|/ => :keyword,
+          
+          # operator
+          /\+|-|!|\={1,3}|!\={1,2}|\?|:|\%/ => :operator,
+          
+          # string will match "...", '...'
+          /(["']).*?\1/i => :string,
+          
+          # number will match 12, 12.1
+          /[0-9\.]+/i => :number,
+          
+          # function
+          /[a-z][a-z0-9_-]*\(|\$\(/i => [ :function, :function ],
+          
+          # punctuation will match }
+          /\(/ => [ :punctuation, :parenthesis ],
+          /\{/ => [ :punctuation, :brace ],
+          
+          # plain
+          /\s*/ => :plain
+        } ],
+        :function => [ {
+          /\)/ => [ :function, :close ]
+        }, [ :base ] ],
+        :parenthesis => [ {
+          /\)/ => [ :punctuation, :close ]
+        }, [ :base ] ],
+        :brace => [ {
+          /\}/ => [ :punctuation, :close ]
+        }, [ :base ] ]
       }
     end
     
