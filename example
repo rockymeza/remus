@@ -103,9 +103,3 @@ var RecaptchaOptions = {
 ', :js ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
-
-#puts('--------------------- JavaScript From File' )
-#start_time = Time.new.to_f
-#puts( Remus.convert_from_file( 'examples/js.js', :js ) )
-#end_time = Time.new.to_f
-#puts( 'Time: '+ (end_time - start_time).to_s)

@@ -65,14 +65,21 @@ module Remus
     end
     
     
-    def _tokenize( tokens )
+    def _tokenize( token_array )
       p = ''
       
       #if scan( /@@@REMUSNOCOLOR@@@[\s\S]*?@@@REMUSNOCOLOR@@@/ )
       #  p << t( :nocolor )
       #end
+      tokens = token_array[0]
       
-      tokens.merge( @tokens[:catch_all] || Hash.new ).each do | regexp, token |
+      if token_array.length > 1
+        token_array[1].each do | key |
+          tokens.merge!( @tokens[ key ][0] )
+        end
+      end
+      
+      tokens.each do | regexp, token |
         token = [ token ] unless token.is_a? Array
         
         if scan( regexp )
@@ -89,7 +96,7 @@ module Remus
           end
         end
       end
-      getch && t if p == ''
+      getch && p << t if p == ''
       p
     end
     

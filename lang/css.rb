@@ -6,14 +6,14 @@ module Remus
       super string
       
       @tokens = {
-        :base => {
+        :base => [ {
           # punctuation will match { and open a definition
           /\{/ => [ :punctuation, :definition ],
           
           # identifier will match body, div#id, span.class, p#id.class, #id, .class
           /[\w\.#]+/ => :identifier,
-        },
-        :catch_all => {
+        }, [ :global ] ],
+        :global => [ {
           # comment will match /* ... */
           /\/\*[\s\S]*?\*\// =>  :comment,
           
@@ -22,8 +22,8 @@ module Remus
           
           # plain
           /[,\s]+/ => :plain,
-        },
-        :definition => {
+        } ],
+        :definition => [ {
           # attribute will match color:, and ;
           /[\w-]+:|;/i => :attribute,
           
@@ -38,7 +38,7 @@ module Remus
           
           # plain
           /[\w-]+/i => :plain,
-        }
+        }, [ :global ] ]
       }
     end
     

@@ -6,7 +6,7 @@ module Remus
       super string
       
       @tokens = {
-        :base => {
+        :base => [ {
           # comment will match <!-- ... -->
           /<!--[\s\S]*?-->/ => :comment,
           
@@ -18,8 +18,8 @@ module Remus
           
           # plain
           /[^<&]+/ => :plain,
-        },
-        :tag => {
+        } ],
+        :tag => [ {
           # attribute will match id=
           /\w+=/ => :attribute,
           
@@ -31,7 +31,7 @@ module Remus
           
           # plain
           /\s+/ => :plain,
-        }
+        } ]
       }
       
       # subregions are for embedded languages like JS and CSS
