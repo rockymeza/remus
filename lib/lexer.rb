@@ -35,30 +35,19 @@ module Remus
     
     
     def main
-      _subregionize
-      
       tokens = ''
       tokens << tokenize until eos?
       tokens
     end
     
+    
     def t( type = :plain, *args )
+      puts matched.dump, type
       if args.length == 1; return Token.new( args[0], type ); end
       
       return Token.new( matched, type )
     end
-    
-    def _subregionize
-      @subregions.each do | lang, regex |
-        if subregions = string.scan( regex )
-          subregions.each do |subregion|
-            new_subregion = Remus.convert( subregion[1], lang ).to_s
-            #string.sub!( subregion[1], no_color( new_subregion ) )
-            string.sub!( subregion[1], new_subregion )
-          end
-        end
-      end
-    end
+      
       
     def tokenize
       return _tokenize( @tokens[:base] )
@@ -68,9 +57,9 @@ module Remus
     def _tokenize( token_array )
       p = ''
       
-      #if scan( /@@@REMUSNOCOLOR@@@[\s\S]*?@@@REMUSNOCOLOR@@@/ )
-      #  p << t( :nocolor )
-      #end
+      if scan( /@@@REMUSNOCOLOR@@@[\w\W]*?@@@REMUSNOCOLOR@@@/ )
+        p << t( :nocolor )
+      end
       tokens = token_array[0]
       
       if token_array.length > 1
@@ -83,12 +72,17 @@ module Remus
         token = [ token ] unless token.is_a? Array
         
         if scan( regexp )
+          if token[0].is_a? Hash
+            p << Remus.convert( matched, token[0][:lang] ).to_s
+            break
+          end
+          
           p << t( token[0] )
           
-          if token.length > 1
-            return [ p, :close ] if token[1] == :close
+          token[1..-1].each do | modifier |
+            return [ p, :close ] if modifier == :close
             
-            while a = _tokenize( @tokens[ token[1] ] )
+            while a = _tokenize( @tokens[ modifier ] )
               a = [ a ] unless a.is_a? Array
               p << a[0]
               break if a.length > 1 && a[1] == :close
@@ -111,12 +105,8 @@ module Remus
       super string
       @output = String.new
       @subregions = Hash.new
+      setup
     end
-    
-    
-    #def no_color( string )
-    #  return '@@@REMUSNOCOLOR@@@' + string + '@@@REMUSNOCOLOR@@@'
-    #end
   end
   
 end

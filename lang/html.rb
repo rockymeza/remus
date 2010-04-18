@@ -2,16 +2,17 @@ module Remus
   
   class Html < Lexer
   
-    def initialize( string )
-      super string
-      
+    def setup
       @tokens = {
         :base => [ {
           # comment will match <!-- ... -->
-          /<!--[\s\S]*?-->/ => :comment,
+          /<!--.*?-->/m => :comment,
+          
+          /<style/i => [ :identifier, :tag, :css ],
+          /<script/i => [ :identifier, :tag, :js ],
           
           # identifier will match </p>, <br />
-          /<\/[a-z0-9]+>|<[a-z0-9]+\s\/>/ => :identifier,
+          /<\/[a-z0-9]+>/ => :identifier,
           
           # identifier will match <p and open the :tag
           /<\w+/ => [ :identifier, :tag ],
@@ -24,20 +25,24 @@ module Remus
           /\w+=/ => :attribute,
           
           # string will match "...", '...'
-          /(["']).*?\1/ => :string,
+          /(["']).*?\1/m => :string,
           
           # identifier will match > and close out
           />|\/>/ => [ :identifier, :close ],
           
           # plain
           /\s+/ => :plain,
-        } ]
-      }
-      
-      # subregions are for embedded languages like JS and CSS
-      # I know it's kind of a lame syntax to have to find three groups, but that's the only way I could get it to work
-      @subregions = {
-        :css => /(<style.*?>)([\s\S]*?)(<\/style>)/i
+        } ],
+        :css => [ {
+          /<\/style>/i => [ :identifier, :close ],
+          
+          /.+?(?=<\/style>)/mi => { :lang => :css },
+        } ],
+        :js => [ {
+          /<\/script>/i => [ :identifier, :close ],
+          
+          /.+?(?=<\/script>)/mi => { :lang => :js },
+        } ],
       }
     end
     

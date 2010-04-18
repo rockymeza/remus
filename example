@@ -4,102 +4,10 @@ require 'remus'
 # timer
 puts( 'Remus Test Run')
 
-puts('--------------------- Plain Text' )
+lang = ARGV[0] || :html
+
+puts('--------------------- '+ Remus.classify(lang) )
 start_time = Time.new.to_f
-puts( Remus.convert( 'This is plain text
-Here is another line' ) )
-end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s)
-
-puts('--------------------- HTML' )
-start_time = Time.new.to_f
-puts( Remus.convert( '<!--This is HTML-->
-<p id="here">Hello "World!"</p><br />
-<span class=\'there more\'>Here\'s a new line</span>', :html ) )
-end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s)
-
-puts('--------------------- CSS' )
-start_time = Time.new.to_f
-puts( Remus.convert( 'body, html {
-  color: #adf123;
-  font-family: "Courier New", Courier, monospace;
-}
-
-/*
-  multi-line comment
-  hahaha
- */
-div#id.class {
-  background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
-  width: 45px !important;
-  height: 45%;
-  /* comment */
-}
-', :css ) )
-end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s)
-
-puts('--------------------- HTML + CSS' )
-start_time = Time.new.to_f
-puts( Remus.convert( '<!--This is HTML with embedded CSS-->
-<p id="here">Hello "World!"</p><br />
-<span class=\'there more\'>Here\'s a new line</span>
-<style type="text/css">
-  body, html {
-    color: #adf123;
-    font-family: "Courier New", Courier, monospace;
-  }
-
-  /* comment */
-  div#id.class {
-    background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
-    width: 45px !important;/* comment */
-    height: 45%;
-  }
-</style>
-<!--I repeated it for fun-->
-<p id="here">Hello "World!"</p><br />
-<span class=\'there more\'>Here\'s a new line</span>
-<style type="text/css">
-  body, html {
-    color: #adf123;
-    font-family: "Courier New", Courier, monospace;
-  }
-
-  /* comment */
-  div#id.class {
-    background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
-    width: 45px !important;/* comment */
-    height: 45%;
-  }
-</style>
-', :html ) )
-end_time = Time.new.to_f
-puts( 'Time: '+ (end_time - start_time).to_s)
-
-puts('--------------------- JavaScript' )
-start_time = Time.new.to_f
-puts( Remus.convert( '//document.write("<h1>This is a heading</h1>");
-document.write("<p>This is a paragraph.</p>");
-document.write("<p>This is another paragraph.</p>");
-/*
-multi
-line
-comment
-*/
-var RecaptchaOptions = {
-      theme : \'custom\'
-    };
-    $(document).ready(function(){
-      $("ul,ol").each(function(){
-        if ( ! $(this).parent(\':first\').hasClass("list") && $(this).parent(\':first\').attr(\'tagName\').toLowerCase() != "li")
-        {
-          $(this).wrap(unescape(\'%3Cdiv class="list"%3E%3C/div%3E\'));
-        }
-      });
-    });
-
-', :js ) )
+puts( Remus.convert_from_file( 'examples/example.'+ lang, lang ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)

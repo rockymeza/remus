@@ -2,20 +2,18 @@ module Remus
   
   class Css < Lexer
     
-    def initialize( string )
-      super string
-      
+    def setup
       @tokens = {
         :base => [ {
           # punctuation will match { and open a definition
           /\{/ => [ :punctuation, :definition ],
           
           # identifier will match body, div#id, span.class, p#id.class, #id, .class
-          /[\w\.#]+/ => :identifier,
+          /[a-z0-9\.#_-]+|:[a-z0-9_-]+/i => :identifier,
         }, [ :global ] ],
         :global => [ {
           # comment will match /* ... */
-          /\/\*[\s\S]*?\*\// =>  :comment,
+          /\/\*.*?\*\//m =>  :comment,
           
           # keyword
           /!important|inherit/ => :keyword,
