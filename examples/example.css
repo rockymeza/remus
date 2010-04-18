@@ -7,8 +7,8 @@ body, html {
   multi-line comment
   hahaha
  */
-div#id.class {
-  background: #00ff00 url(\'smiley.gif\') no-repeat fixed center;
+div#id.class:pseudo-selector {
+  background: #00ff00 url('smiley.gif') no-repeat fixed center;
   width: 45px !important;
   height: 45%;
   /* comment */

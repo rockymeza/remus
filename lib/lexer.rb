@@ -101,7 +101,7 @@ module Remus
       end
       
       
-      def initialize( string, options = { :token_class => :html } )
+      def initialize( string, options = {} )
         @token_class = Remus.classify( options[:token_class] )
         require "lib/tokens/#{options[:token_class]}" unless Remus::Token.const_defined?( @token_class )
         
