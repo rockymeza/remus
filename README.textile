@@ -8,7 +8,7 @@ Remus was inspired by not wanting to do homework, the awesome Python syntax high
 
 h3. Remus in action?
 
-You could clone Remus and run the @./example@.  (requires ruby--I know it works on 1.9, I don't know about 1.8).
+You could clone Remus and run the @./example@ or @./example language@ or @./example language token_class@.  (requires ruby--I know it works on 1.9, I don't know about 1.8).
 
 h3. How to use Remus?
 
