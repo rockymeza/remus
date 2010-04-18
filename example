@@ -6,7 +6,8 @@ puts( 'Remus Test Run')
 
 puts('--------------------- Plain Text' )
 start_time = Time.new.to_f
-puts( Remus.convert( 'This is plain text' ) )
+puts( Remus.convert( 'This is plain text
+Here is another line' ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
 
@@ -18,6 +19,7 @@ puts( Remus.convert( '<!--This is HTML-->
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
 
+=begin
 puts('--------------------- CSS' )
 start_time = Time.new.to_f
 puts( Remus.convert( 'body, html {
@@ -72,3 +74,4 @@ puts( Remus.convert( '<!--This is HTML with embedded CSS-->
 ', :html ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
+=end
