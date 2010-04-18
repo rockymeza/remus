@@ -10,11 +10,11 @@ module Remus
           # comment will match <!-- ... -->
           /<!--[\s\S]*?-->/ => [ :comment ],
           
-          # identifier will match <p and open the :tag
-          /<\s*[a-z0-9]+\s/i => [ :identifier, :tag ],
-          
           # identifier will match </p>, <br />
           /<\/[a-z0-9]+>|<[a-z0-9]+\s\/>/ => [ :identifier ],
+          
+          # identifier will match <p and open the :tag
+          /<\w+/ => [ :identifier, :tag ],
           
           # plain
           /[^<&]+/ => [ :plain ]
