@@ -27,7 +27,7 @@ module Remus
           /(["']).*?\1/ => [ :string ],
           
           # identifier will match > and close out
-          />/ => [ :identifier, :close ],
+          />|\/>/ => [ :identifier, :close ],
           
           # plain
           /\s+/ => [ :plain ]
