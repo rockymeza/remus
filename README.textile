@@ -1,2 +1,2 @@
-h1.Remus is a syntax highlighter.
-h2.It's gonna be pretty awesome
+h1. Remus is a syntax highlighter.
+h2. It's gonna be pretty awesome
