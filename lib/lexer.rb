@@ -7,10 +7,19 @@ module Remus
     
     attr_accessor :tokens
     
-    def to_s
+    def convert
       @output << before
       @output << main
       @output << after
+    end
+    
+    def to_s
+      @output
+    end
+    
+    
+    def dump
+      to_s.dump
     end
     
     
@@ -28,7 +37,9 @@ module Remus
       tokens
     end
     
-    def t( type = :plain )
+    def t( type = :plain, *args )
+      if args.length == 1; return Token.new( args[0], type ); end
+      
       return Token.new( matched, type )
     end
     
@@ -56,15 +67,18 @@ module Remus
       end
       
       tokens.each do | regexp, token |
-        puts tokens.inspect
         if scan( regexp )
           p << t( token[0] )
           
           if token.length > 1
-            if token[1] == :close
-              break
-            else
-              _tokenize( @tokens[ token[1] ] )
+            return [ p ] if token[1] == :close
+            
+            while a = _tokenize( @tokens[ token[1] ] )
+              if a.is_a? Array
+                p << a[0]
+                break
+              end
+              p << a
             end
           end
         end

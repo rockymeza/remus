@@ -13,15 +13,17 @@ module Remus
     require "lang/#{language}" unless Remus.const_defined?( class_name )
     
     # instantiate and return the lexer
-    lexer = Remus.const_get( class_name ).new( string )
+    lexer = Remus.const_get( class_name ).new( string ).convert
   end
   module_function :convert
   
   
   def convert_from_file( file, language )
-    # TODO: make this work
-    # it should figure out the language automatically.
+    text = IO.read(file)
+    
+    Remus.convert( text, language)
   end
+  module_function :convert_from_file
   
   
   def classify( symbol )
