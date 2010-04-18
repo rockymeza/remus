@@ -42,6 +42,9 @@ module Remus
       
       # property
       def property(text); colorize(text, "\e[35m"); end
+      
+      # reserved
+      def reserved(text); colorize(text, "\e[35m"); end
     end
     
   end
