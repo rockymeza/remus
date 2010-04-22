@@ -6,6 +6,7 @@ module Remus
 
     class Lexer < StringScanner
       
+      @@tokens = {}
       attr_accessor :tokens
       
       def convert
@@ -64,6 +65,12 @@ module Remus
         
         if token_array.length > 1
           token_array[1].each do | key |
+            if key.is_a? Array
+              require "lang/#{key[0]}"
+              lexer_class = Remus.classify( key[0] )
+              tokens.merge!( Remus::Lexer.const_get( lexer_class ).tokens[ key[1] ][0] )
+            end
+            
             tokens.merge!( @tokens[ key ][0] )
           end
         end
@@ -103,7 +110,7 @@ module Remus
       
       def initialize( string, options = {} )
         @token_class = Remus.classify( options[:token_class] )
-        require "lib/tokens/#{options[:token_class]}" unless Remus::Token.const_defined?( @token_class )
+        require "lib/tokens/#{options[:token_class]}"
         
         super string
         @options = options
@@ -113,13 +120,15 @@ module Remus
       end
       
       
-      # setup should define the @tokens variable
+      def self.tokens
+        @@tokens
+      end
+      
+      
+      # this is odd, maybe I don't understand how class variables work
+      # 
       def setup
-        @tokens = {
-          :base => [ {
-            /.*/m => [ :plain ]
-          } ]
-        }
+        @tokens = @@tokens
       end
     end
     
@@ -127,6 +136,11 @@ module Remus
     # An empty Lexer class, basically returns the string untouched
     # This is the default Lexer.
     class PlainText < Lexer
+      @@tokens = {
+        :base => [ {
+          /.*/m => [ :plain ]
+        } ]
+      }
     end
   
   end
