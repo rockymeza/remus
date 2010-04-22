@@ -13,7 +13,7 @@ module Remus
             /<script/i => [ :identifier, :tag, :js ],
             
             # identifier will match </p>, <br />
-            /<\/[a-z0-9]+>/ => :identifier,
+            /<[a-z0-9]+>|<\/[a-z0-9]+>/ => :identifier,
             
             # identifier will match <p and open the :tag
             /<\w+/ => [ :identifier, :tag ],
