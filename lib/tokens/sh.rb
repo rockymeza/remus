@@ -29,7 +29,7 @@ module Remus
       def number(text); colorize(text, "\e[34m"); end
       
       # punctuation
-      def punctuation(text); colorize(text, "\e[33m"); end
+      def punctuation(text); colorize(text, "\e[35m"); end
       
       # operator
       def operator(text); colorize(text, "\e[1m\e[30m"); end
@@ -44,7 +44,7 @@ module Remus
       def property(text); colorize(text, "\e[35m"); end
       
       # reserved
-      def reserved(text); colorize(text, "\e[35m"); end
+      def reserved(text); colorize(text, "\e[33m"); end
     end
     
   end
