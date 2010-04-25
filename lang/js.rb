@@ -2,7 +2,7 @@ module Remus
   module Lexer
     
     class Js < Lexer
-      @@tokens = {
+      Tokens = {
         :base => [ {
           # comment will match /* ... */ or // comment
           /\/\*.*?\*\//m => :comment,

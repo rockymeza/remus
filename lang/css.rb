@@ -2,7 +2,7 @@ module Remus
   module Lexer
     
     class Css < Lexer
-      @@tokens = {
+      Tokens = {
         :base => [ {
           # punctuation will match { and open a definition
           /\{/ => [ :punctuation, :definition ],
