@@ -2,7 +2,7 @@ module Remus
   module Lexer
     
     class Html < Lexer
-      @@tokens = {
+      Tokens = {
         :base => [ {
           # comment will match <!-- ... -->
           /<!--.*?-->/m => :comment,

@@ -6,8 +6,7 @@ module Remus
 
     class Lexer < StringScanner
       
-      @@tokens = {}
-      attr_accessor :tokens
+      Tokens = {}
       
       def convert
         @output << before
@@ -38,7 +37,7 @@ module Remus
       
       def main
         tokens = ''
-        tokens << tokenize until eos?
+        tokens << tokenize( @tokens[:base] )
         tokens
       end
       
@@ -50,33 +49,26 @@ module Remus
       end
         
         
-      def tokenize
-        return _tokenize( @tokens[:base] )
+      def tokenize( token_array )
+        tokens = process_tokens( token_array )
+        
+        p = ''
+        p << _tokenize( tokens ) until eos?
+        return p
       end
       
       
-      def _tokenize( token_array )
+      def _tokenize( tokens )
         p = ''
-        
-        tokens = token_array[0]
-        
-        if token_array.length > 1
-          token_array[1].each do | key |
-            if key.is_a? Array
-              require "lang/#{key[0]}"
-              lexer_class = Remus.classify( key[0] )
-              tokens.merge!( Remus::Lexer.const_get( lexer_class ).tokens[ key[1] ][0] )
-            else
-              tokens.merge!( @tokens[ key ][0] )
-            end
-          end
-        end
         
         tokens.each do | regexp, token |
           token = [ token ] unless token.is_a? Array
           
           while scan( regexp ) && ! matched.empty?
-            if token[0].is_a? Hash
+            if token[0].is_a? String
+              p << self.send(token[0])
+              break
+            elsif token[0].is_a? Hash
               p << Remus.convert( matched, token[0][:lang], @options ).to_s
               break
             end
@@ -86,16 +78,35 @@ module Remus
             token[1..-1].each do | modifier |
               return [ p, :close ] if modifier == :close
               
-              while a = _tokenize( @tokens[ modifier ] )
+              modifier_tokens = process_tokens( @tokens[ modifier ] )
+              while a = _tokenize( modifier_tokens )
                 a = [ a ] unless a.is_a? Array
                 p << a[0]
-                break if a.length > 1 && a[1] == :close
+                break if ( a.length > 1 && a[1] == :close ) || eos?
               end
             end
           end
         end
         getch && p << t if p == ''
         p
+      end
+      
+      
+      def process_tokens( token_array )
+        tokens = token_array[0]
+        
+        if token_array.length > 1
+          token_array[1].each do | key |
+            if key.is_a? Array
+              require "lang/#{key[0]}"
+              lexer_class = Remus.classify( key[0] )
+              tokens.merge!( Remus::Lexer.const_get( lexer_class )::Tokens[ key[1] ][0] )
+            else
+              tokens.merge!( @tokens[ key ][0] )
+            end
+          end
+        end
+        tokens
       end
       
       
@@ -117,15 +128,10 @@ module Remus
       end
       
       
-      def self.tokens
-        @@tokens
-      end
-      
-      
       # this is odd, maybe I don't understand how class variables work
       # 
       def setup
-        @tokens = @@tokens
+        @tokens = self.class::Tokens
       end
     end
     
@@ -133,7 +139,7 @@ module Remus
     # An empty Lexer class, basically returns the string untouched
     # This is the default Lexer.
     class PlainText < Lexer
-      @@tokens = {
+      Tokens = {
         :base => [ {
           /.*/m => [ :plain ]
         } ]
