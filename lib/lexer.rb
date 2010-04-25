@@ -58,9 +58,6 @@ module Remus
       def _tokenize( token_array )
         p = ''
         
-        if scan( /@@@REMUSNOCOLOR@@@[\w\W]*?@@@REMUSNOCOLOR@@@/ )
-          p << t( :nocolor )
-        end
         tokens = token_array[0]
         
         if token_array.length > 1
@@ -69,9 +66,9 @@ module Remus
               require "lang/#{key[0]}"
               lexer_class = Remus.classify( key[0] )
               tokens.merge!( Remus::Lexer.const_get( lexer_class ).tokens[ key[1] ][0] )
+            else
+              tokens.merge!( @tokens[ key ][0] )
             end
-            
-            tokens.merge!( @tokens[ key ][0] )
           end
         end
         
