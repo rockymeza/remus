@@ -79,7 +79,7 @@ module Remus
           /\)/ => [ :reserved, :close ],
         }, [ :php ] ],
         :goto => [ {
-          /\w/ => :identifier,
+          /\w+/ => :identifier,
           
           /;/ => [ :punctuation, :close ],
         } ],
