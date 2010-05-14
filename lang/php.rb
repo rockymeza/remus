@@ -64,9 +64,10 @@ module Remus
         :double_quote => [ {
           /"/ => [ :string, :close ],
           
-          /\{\$/ => [ :variable, :escape_bracket ],
+          /\{(?:\$)/ => [ :variable, :escape_bracket ],
           
-          /[^"\\\{]*?(?:\\.[^\\"]*)*/m => :string,
+          /[^"]*/m => :string,
+#          /[^"\\\{]*?(?:\\.[^\\"]*)*/m => :string,
         }, [ :variable ] ],
         :function => [ {
           /\)/ => [ :function, :close ],
