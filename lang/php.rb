@@ -66,7 +66,7 @@ module Remus
           
           /\{(?:\$)/ => [ :variable, :escape_bracket ],
           
-          /[^"]*/m => :string,
+          /.*/m => :string,
         }, [ :variable ] ],
         :function => [ {
           /\)/ => [ :function, :close ],
