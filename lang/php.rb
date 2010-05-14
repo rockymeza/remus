@@ -16,6 +16,9 @@ module Remus
           /\/\*\*/ => [ :comment, :phpdoc ],
           /\/\*.*?\*\//m => :comment,
           
+          # a goto target
+          /\w+:/ => :identifier,
+          
           # thanks to http://dev.pocoo.org/projects/pygments/browser/pygments/lexers/web.py:753-4
           /'[^\\']*(?:\\.[^\\']*)*'|`[^\\`]*(?:\\.[^\\`]*)*`/m => :string,
           /<<<'([a-z]+)'.*?\1(;)?/i => :string, # support for nowdocs included in PHP 5.3.0
@@ -30,12 +33,13 @@ module Remus
           
           /\b(if|else\s*if|foreach|for|while|switch|array)\s*\(/ => [ :reserved, :reserved ],
           
-          /\b(else|case|function|class|extends|implements|public|static|private|\{|\})\b/ => :reserved,
+          /\b(else|case|function|class|extends|implements|public|static|new|private|\{|\})\b/i => :reserved,
+          /\b(goto)\b/ => [ :reserved, :goto ],
           
           /[a-z_][a-z0-9_]*\s*\(/i => [ :function, :function ],
           /echo|return/ => :function,
           
-          /TRUE|FALSE|NULL|E_ERROR|E_ALL|E_STRICT|E_NOTICE/ => :keyword,
+          /TRUE|FALSE|NULL|E_ERROR|E_ALL|E_STRICT|E_NOTICE|LOCK_EX/ => :keyword,
           
           /[A-Z][A-Za-z0-9_]*/ => :identifier,
         }, [ :variable ] ],
@@ -74,6 +78,11 @@ module Remus
         :reserved => [ {
           /\)/ => [ :reserved, :close ],
         }, [ :php ] ],
+        :goto => [ {
+          /\w/ => :identifier,
+          
+          /;/ => [ :punctuation, :close ],
+        } ],
       }
       
       
