@@ -77,7 +77,7 @@ module Remus
             
             token[1..-1].each do | modifier |
               return [ p, :close ] if modifier == :close
-              
+
               modifier_tokens = process_tokens( @tokens[ modifier ] )
               while a = _tokenize( modifier_tokens )
                 a = [ a ] unless a.is_a? Array
@@ -100,7 +100,9 @@ module Remus
             if key.is_a? Array
               require "lang/#{key[0]}"
               lexer_class = Remus.classify( key[0] )
-              tokens.merge!( Remus::Lexer.const_get( lexer_class )::Tokens[ key[1] ][0] )
+              foreign_tokens = Remus::Lexer.const_get( lexer_class )::Tokens
+              tokens.merge!( foreign_tokens.delete( key[1] )[0] )
+              @tokens.merge!( foreign_tokens )
             else
               tokens.merge!( @tokens[ key ][0] )
             end
