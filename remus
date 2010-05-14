@@ -6,10 +6,10 @@ if $stdin.tty?
   lang = ARGV[1]
   token_class = ARGV[2] || :sh
 
-  puts( Remus.convert_from_file( file, lang, { :token_class => token_class } ) )
+  puts( Remus.convert_from_file( file, lang, :token_class => token_class ) )
 else
   lang = ARGV[0]
   token_class = ARGV[1] || :sh
   
-  puts( Remus.convert( $stdin.read, lang, { :token_class => token_class } ) )
+  puts( Remus.convert( $stdin.read, lang, :token_class => token_class ) )
 end
