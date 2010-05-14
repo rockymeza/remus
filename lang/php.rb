@@ -37,7 +37,7 @@ module Remus
           /\b(goto)\b/ => [ :reserved, :goto ],
           
           /[a-z_][a-z0-9_]*\s*\(/i => [ :function, :function ],
-          /echo|return/ => :function,
+          /\b(echo|return|use)\b/ => :reserved,
           
           /TRUE|FALSE|NULL|E_ERROR|E_ALL|E_STRICT|E_NOTICE|LOCK_EX/ => :keyword,
           
