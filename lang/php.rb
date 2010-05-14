@@ -62,11 +62,11 @@ module Remus
           /\}/ => [ :variable, :close ],
         }, [ :variable ] ],
         :double_quote => [ {
-          /[^\\]"/ => [ :string, :close ],
+          /"/ => [ :string, :close ],
           
           /\{(?:\$)/ => [ :variable, :escape_bracket ],
           
-          /.*/m => :string,
+          /[^\\"]*(?:\\.)*/m => :string,
         }, [ :variable ] ],
         :function => [ {
           /\)/ => [ :function, :close ],
