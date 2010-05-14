@@ -1,15 +1,35 @@
 #!/usr/bin/env ruby
+require 'rubygems'
+require 'commandline'
+
 require 'remus'
 
-if $stdin.tty?
-  file = ARGV[0]
-  lang = ARGV[1]
-  token_class = ARGV[2] || :sh
+module Remus
+  class Remus < CommandLine::Application
+    
+    def initialize
+      author "Rocky Meza, William Scales"
+      copyright "Rocky Meza, William Scales, 2010"
 
-  puts( Remus.convert_from_file( file, lang, :token_class => token_class ) )
-else
-  lang = ARGV[0]
-  token_class = ARGV[1] || :sh
-  
-  puts( Remus.convert( $stdin.read, lang, :token_class => token_class ) )
+      options :help, :debug
+    end
+    
+    def main
+=begin
+      if $stdin.tty?
+        file = ARGV[0]
+        lang = ARGV[1]
+        token_class = ARGV[2] || :sh
+
+        puts( Remus.convert_from_file( file, lang, :token_class => token_class ) )
+      else
+        lang = ARGV[0]
+        token_class = ARGV[1] || :sh
+        
+        puts( Remus.convert( $stdin.read, lang, :token_class => token_class ) )
+      end
+=end
+    end
+    
+  end
 end
