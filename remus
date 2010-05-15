@@ -1,45 +1,35 @@
 #!/usr/bin/env ruby
-require 'optparse'
+require 'trollop'
 require 'remus'
 
-options = {}
-OptionParser.new do | opts |
-  opts.banner = "Usage: ./remus [options]"
 
-  opts.on('-l', '--language [LANGUAGE]',
-                'The language of the code to be colored',
-                'Remus will attempt to figure this out') do | language |
-    options[:language] = language
-  end
+options = Trollop::options do
+  version "Remus 0.0.1 (c) 2010 Rocky Meza, William Scales"
+  banner <<-EOS
+Remus is a syntax highlighter
 
-  opts.on('-t', '--token-class [TOKEN_CLASS]',
-                'The token class to be output') do | token_class |
-    options[:token_class] = token_class
-  end
+Usage:
+       remus [options]
+where [options] are:
+EOS
 
-  opts.on('-c', '--code [CODE]',
-                'The code to be colored') do | code |
-    options[:code] = code
-  end
-
-  opts.on('-f', '--file [FILENAME]',
-                'A file to be colored') do | filename |
-    options[:filename] = filename
-  end
+  opt :filename, "A file to be colored, Remus will try to identify the language", :type => String
+  opt :language, "The language of the code to be colored", :type => String
+  opt :token_class, "The output format", :type => String
+  opt :code, "Code to be colored", :type => String
   
-  opts.on('-h', '--help',
-                'Show this message') do
-    puts opts
-    exit
-  end
+end
 
-end.parse!
+if ! $stdin.tty? # if code is piped in
+  options[:code] = $stdin.read unless $stdin.tty? # grab code that is piped in
+  options[:language] = Remus.parse_shebang options[:code] if ! options[:language] # try to detect language
+end
 
-options[:code] = $stdin.read unless $stdin.tty?
+Trollop::die :language, 'No language detected, please specify a language' if ( options[:code] && ! options[:language] )
 
-defaults = { :token_class => :sh }
-
-options = defaults.merge options
+options.delete_if { |key,value| value.nil? } # remove empties
+defaults = { :token_class => :sh } # defaults hash
+options = defaults.merge options # merge options into defaults
 
 if options[:code]
   
@@ -47,19 +37,7 @@ if options[:code]
   
 elsif options[:filename]
   
-  puts Remus.convert_from_file( options[:filename], options[:language], options )
+  puts Remus.convert_from_file( options[:filename], options )
   
 end
-
-
-
-
-
-
-
-
-
-
-
-
 
