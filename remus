@@ -1,35 +1,65 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require 'commandline'
-
+require 'optparse'
 require 'remus'
 
-module Remus
-  class Remus < CommandLine::Application
-    
-    def initialize
-      author "Rocky Meza, William Scales"
-      copyright "Rocky Meza, William Scales, 2010"
+options = {}
+OptionParser.new do | opts |
+  opts.banner = "Usage: ./remus [options]"
 
-      options :help, :debug
-    end
-    
-    def main
-=begin
-      if $stdin.tty?
-        file = ARGV[0]
-        lang = ARGV[1]
-        token_class = ARGV[2] || :sh
-
-        puts( Remus.convert_from_file( file, lang, :token_class => token_class ) )
-      else
-        lang = ARGV[0]
-        token_class = ARGV[1] || :sh
-        
-        puts( Remus.convert( $stdin.read, lang, :token_class => token_class ) )
-      end
-=end
-    end
-    
+  opts.on('-l', '--language [LANGUAGE]',
+                'The language of the code to be colored',
+                'Remus will attempt to figure this out') do | language |
+    options[:language] = language
   end
+
+  opts.on('-t', '--token-class [TOKEN_CLASS]',
+                'The token class to be output') do | token_class |
+    options[:token_class] = token_class
+  end
+
+  opts.on('-c', '--code [CODE]',
+                'The code to be colored') do | code |
+    options[:code] = code
+  end
+
+  opts.on('-f', '--file [FILENAME]',
+                'A file to be colored') do | filename |
+    options[:filename] = filename
+  end
+  
+  opts.on('-h', '--help',
+                'Show this message') do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+options[:code] = $stdin.read unless $stdin.tty?
+
+defaults = { :token_class => :sh }
+
+options = defaults.merge options
+
+if options[:code]
+  
+  puts Remus.convert( options[:code], options[:language], options )
+  
+elsif options[:filename]
+  
+  puts Remus.convert_from_file( options[:filename], options[:language], options )
+  
 end
+
+
+
+
+
+
+
+
+
+
+
+
+

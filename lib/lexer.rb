@@ -24,11 +24,6 @@ module Remus
       end
       
       
-      def dump
-        to_s.dump
-      end
-      
-      
       # if the lexer wishes to output something prior to tokenizes
       def before
         ''
@@ -119,6 +114,8 @@ module Remus
       
       
       def initialize( string, options = {} )
+        defaults = { :token_class => :html }
+        options = defaults.merge options
         @token_class = Remus.classify( options[:token_class] )
         require "lib/tokens/#{options[:token_class]}"
         

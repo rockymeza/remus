@@ -5,7 +5,7 @@ module Remus
   # The main function.
   # Takes a string and converts it using a lexer specified by the
   # language parameter.
-  def convert( string, language = :plain_text, options = { :token_class => :html })
+  def convert( string, language = :plain_text, options = {})
     class_name = Remus.classify( language )
     
     # require the language file unless the class_name is defined already
