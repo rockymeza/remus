@@ -18,8 +18,16 @@ module Remus
   module_function :convert
   
   
-  def convert_from_file( file, language, options = {} )
-    text = IO.read(file)
+  def convert_from_file( filename, options = {} )
+    text = IO.read(filename)
+
+    unless language = options[:language]
+      language = File.extname(filename).delete('.') || parse_shebang(text)
+      case language
+      when "rb"
+        language = "ruby"
+      end
+    end
     
     Remus.convert( text, language, options)
   end
@@ -33,5 +41,18 @@ module Remus
   end
   module_function :classify
   
-  
+  def parse_shebang( text )
+    if text[0..1] == "#!"
+      shebang = text.scan( /^#!.*$/ ) 
+      if shebang.empty?
+        nil
+      else
+        File.basename( shebang[0] ).split[-1]
+      end
+    else
+      nil
+    end
+  end
+  module_function :parse_shebang
+
 end
