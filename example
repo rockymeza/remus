@@ -9,6 +9,6 @@ token_class = ARGV[1] || :sh
 
 puts('--------------------- '+ Remus.classify(lang) )
 start_time = Time.new.to_f
-puts( Remus.convert_from_file( 'examples/example.'+ lang.to_s, lang, :token_class => token_class ) )
+puts( Remus.convert_from_file( 'examples/example.'+ lang.to_s, :token_class => token_class ) )
 end_time = Time.new.to_f
 puts( 'Time: '+ (end_time - start_time).to_s)
