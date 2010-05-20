@@ -9,31 +9,31 @@ options = Trollop::options do
 Remus is a syntax highlighter
 
 Usage:
-       remus [options]
+       remus [options] [code]
 where [options] are:
 EOS
 
   opt :filename, "A file to be colored, Remus will try to identify the language", :type => String
   opt :language, "The language of the code to be colored", :type => String
   opt :token_class, "The output format", :type => String
-  opt :code, "Code to be colored", :type => String
   
 end
 
 if ! $stdin.tty? # if code is piped in
-  options[:code] = $stdin.read unless $stdin.tty? # grab code that is piped in
-  options[:language] = Remus.parse_shebang options[:code] if ! options[:language] # try to detect language
+  code = $stdin.read unless $stdin.tty? # grab code that is piped in
+  options[:language] = Remus.parse_shebang code if ! options[:language] # try to detect language
+elsif ! ARGV[0].nil?
+  code = ARGV[0]
 end
-
-Trollop::die :language, 'No language detected, please specify a language' if ( options[:code] && ! options[:language] )
+Trollop::die :language, 'No language detected, please specify a language' if ( code && ! options[:language] )
 
 options.delete_if { |key,value| value.nil? } # remove empties
 defaults = { :token_class => :sh } # defaults hash
 options = defaults.merge options # merge options into defaults
 
-if options[:code]
+if code
   
-  puts Remus.convert( options[:code], options[:language], options )
+  puts Remus.convert( code, options[:language], options )
   
 elsif options[:filename]
   
