@@ -19,10 +19,7 @@ module Remus
           # a goto target
           /\w+:/ => :identifier,
           
-          # thanks to http://dev.pocoo.org/projects/pygments/browser/pygments/lexers/web.py:753-4
-          /'[^\\']*(?:\\.[^\\']*)*'|`[^\\`]*(?:\\.[^\\`]*)*`/m => :string,
           /<<<'([a-z]+)'.*?\1(;)?/i => :string, # support for nowdocs included in PHP 5.3.0
-          /"/ => [ :string, :double_quote ],
           /(<<<([a-z]+|"[a-z]+"))/i => 'php_heredoc',
           
           # thanks to http://www.php.net/manual/en/language.types.integer.php
@@ -33,7 +30,7 @@ module Remus
           
           /\b(if|else\s*if|foreach|for|while|switch|array)\s*\(/ => [ :reserved, :reserved ],
           
-          /\b(else|case|function|class|extends|implements|public|static|new|private|\{|\})\b/i => :reserved,
+          /\b(else|case|function|class|extends|implements|public|static|new|private|use|\{|\})\b/i => :reserved,
           /\b(goto)\b/ => [ :reserved, :goto ],
           
           /[a-z_][a-z0-9_]*\s*\(/i => [ :function, :function ],
@@ -42,14 +39,26 @@ module Remus
           /TRUE|FALSE|NULL|E_ERROR|E_ALL|E_STRICT|E_NOTICE|LOCK_EX/ => :keyword,
           
           /[A-Z][A-Za-z0-9_]*/ => :identifier,
-        }, [ :variable ] ],
+        }, [ :variable, :string ] ],
         :variable => [ {
           # thanks to http://www.php.net/manual/en/language.variables.basics.php
           /\$(\{)?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\})?/i => :variable,
           
-          /->/ => [ :reserved, :property],
+          /->/ => [ :reserved, :property ],
           
           /\[|\]/ => :operator,
+        } ],
+        :basic_variable => [ {
+          # thanks to http://www.php.net/manual/en/language.variables.basics.php
+          /\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/i => :variable,
+        } ],
+        :heredoc_variable => [ {
+          /\}/ => [ :string, :close ],
+        }, [ :variable, :string ] ],
+        :string => [ {
+          # thanks to http://dev.pocoo.org/projects/pygments/browser/pygments/lexers/web.py:753-4
+          /'[^\\']*(?:\\.[^\\']*)*'|`[^\\`]*(?:\\.[^\\`]*)*`/m => :string,
+          /"/ => [ :string, :double_quote ],
         } ],
         :property => [ {
           /[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/i => [ :property, :close ],
@@ -91,14 +100,16 @@ module Remus
         opener = matched.scan( /(<<<([a-z]+|"[a-z]+"))/i )
         p = t( :string, opener[0][0] )
         closer_regexp = Regexp.new( '\n' + opener[0][1] + '(;)?', Regexp::MULTILINE )
-        string_regexp = Regexp.new( '[^\{\}\n]+?(?!' + opener[0][1] + '(;)?)' )
+        string_regexp = Regexp.new( '[^\{\}\n\\\$]+?(?!' + opener[0][1] + '(;)?)' )
         
         heredoc_tokens = {
           :base => [ {
             closer_regexp => [ :string, :close ],
             
-            /\{|\}/ => :string,
-          }, [ :variable ] ]
+            /\\\$/ => [ :string ],
+            
+            /\{/ => [ :string, :heredoc_variable ],
+          }, [ :basic_variable ] ]
         }
         processed_tokens = process_tokens( heredoc_tokens[:base] )
         processed_tokens[string_regexp] = :string
