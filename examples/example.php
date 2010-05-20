@@ -15,6 +15,14 @@
 
 <?php
 
+$a = <<<PHP
+This code should \$variable be commented
+$variable->hahaha
+{$this->blah['haha']}
+This code should also be commented
+PHP;
+
+
 function getAdder($x)
 {
     return function ($y) use ($x) {
