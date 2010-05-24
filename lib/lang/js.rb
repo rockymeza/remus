@@ -1,5 +1,4 @@
-module Remus
-  module Lexer
+module Remus::Lexer
     
     class Js < Lexer
       Tokens = {
@@ -53,5 +52,4 @@ module Remus
       }
     end
   
-  end
 end

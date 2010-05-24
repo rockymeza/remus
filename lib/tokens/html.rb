@@ -1,7 +1,6 @@
 require 'cgi'
 
-module Remus
-  module Token
+module Remus::Token
     
     class Html < Token
       def wrap
@@ -14,5 +13,4 @@ module Remus
       end
     end
     
-  end
 end

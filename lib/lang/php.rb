@@ -1,5 +1,4 @@
-module Remus
-  module Lexer
+module Remus::Lexer
     
     class Php < Lexer
       Tokens = {
@@ -123,5 +122,4 @@ module Remus
       end
     end
     
-  end
 end
