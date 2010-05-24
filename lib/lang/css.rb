@@ -1,5 +1,4 @@
-module Remus
-  module Lexer
+module Remus::Lexer
     
     class Css < Lexer
       Tokens = {
@@ -52,5 +51,4 @@ module Remus
       }
     end
     
-  end
 end

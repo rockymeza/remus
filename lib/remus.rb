@@ -1,24 +1,29 @@
-require 'lib/lexer'
+##
+# Remus is a syntax highlighter.
 
-module Remus
+class Remus
+  require 'lib/lexer'
+
+  # version
+  VERSION = '0.9.0'
   
-  # The main function.
-  # Takes a string and converts it using a lexer specified by the
-  # language parameter.
-  def convert( string, language = :plain_text, options = {})
+  
+  ##
+  # Take string and convert it based on language
+  
+  def self.convert( string, language = :plain_text, options = {})
     class_name = Remus.classify( language )
     
-    # require the language file unless the class_name is defined already
-    # aka PlainText
     require "lang/#{language}" unless Remus::Lexer.const_defined?( class_name )
     
-    # instantiate and return the lexer
     lexer = Remus::Lexer.const_get( class_name ).new( string, options ).convert
   end
-  module_function :convert
   
   
-  def convert_from_file( filename, options = {} )
+  ##
+  # Take filename, attempt to discover language, and convert file
+  
+  def self.convert_from_file( filename, options = {} )
     text = IO.read(filename)
 
     unless language = options[:language]
@@ -31,17 +36,22 @@ module Remus
     
     Remus.convert( text, language, options)
   end
-  module_function :convert_from_file
   
   
-  def classify( symbol )
-    # convert the language symbol to a class_name
-    # e.g. :plain_text => PlainText
+  ##
+  # convert the language symbol to a class_name
+  # 
+  # e.g. :plain_text => PlainText
+  
+  def self.classify( symbol )
     symbol.to_s.split('_').select {|w| w.capitalize! || w }.join('')
   end
-  module_function :classify
   
-  def parse_shebang( text )
+  
+  ##
+  # attempt to auto-discover the language of a file based on shebang line
+  
+  def self.parse_shebang( text )
     if text[0..1] == "#!"
       shebang = text.scan( /^#!.*$/ ) 
       if shebang.empty?
@@ -53,6 +63,7 @@ module Remus
       nil
     end
   end
-  module_function :parse_shebang
+  
+  #module_function :convert, :convert_from_file, :classify, :parse_shebang
 
 end

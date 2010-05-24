@@ -1,5 +1,4 @@
-module Remus
-  module Lexer
+module Remus::Lexer
     
     class Html < Lexer
       Tokens = {
@@ -45,5 +44,4 @@ module Remus
       }
     end
   
-  end
 end

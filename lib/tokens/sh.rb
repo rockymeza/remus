@@ -1,5 +1,4 @@
-module Remus
-  module Token
+module Remus::Token
     
     class Sh < Token
       def wrap
@@ -47,5 +46,4 @@ module Remus
       def punctuation(text); colorize(text, "\e[35m"); end
     end
     
-  end
 end
