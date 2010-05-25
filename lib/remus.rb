@@ -2,7 +2,7 @@
 # Remus is a syntax highlighter.
 
 class Remus
-  require 'lib/lexer'
+  require 'remus/lexer'
 
   # version
   VERSION = '0.9.0'
@@ -14,7 +14,7 @@ class Remus
   def self.convert( string, language = :plain_text, options = {})
     class_name = Remus.classify( language )
     
-    require "lang/#{language}" unless Remus::Lexer.const_defined?( class_name )
+    require "remus/lang/#{language}" unless Remus::Lexer.const_defined?( class_name )
     
     lexer = Remus::Lexer.const_get( class_name ).new( string, options ).convert
   end

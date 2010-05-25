@@ -2,7 +2,7 @@ require 'strscan'
 
 module Remus::Lexer
   
-  require 'lib/token'
+  require 'remus/token'
 
   class Lexer < StringScanner
     
@@ -93,7 +93,7 @@ module Remus::Lexer
       if token_array.length > 1
         token_array[1].each do | key |
           if key.is_a? Array
-            require "lang/#{key[0]}"
+            require "remus/lang/#{key[0]}"
             lexer_class = Remus.classify( key[0] )
             foreign_tokens = Remus::Lexer.const_get( lexer_class )::Tokens
             tokens.merge!( foreign_tokens.delete( key[1] )[0] )
@@ -117,7 +117,7 @@ module Remus::Lexer
       defaults = { :token_class => :html }
       options = defaults.merge options
       @token_class = Remus.classify( options[:token_class] )
-      require "lib/tokens/#{options[:token_class]}"
+      require "remus/tokens/#{options[:token_class]}"
       
       super string
       @options = options
