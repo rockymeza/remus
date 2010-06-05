@@ -61,7 +61,7 @@ alternatively: inside ruby from a file
 * expand documentation.
 * expand HTML token class to include line numbers and stuff.
 
-=== Possible Makers:
+=== Possible Doers:
 
 Pull source from github, try to follow other language examples. Please note that Remus aims at having the simplest end-user syntax.  I think something that is easy to use will be used more often.
 

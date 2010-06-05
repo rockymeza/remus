@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
-$: << 'lib'
-
-require 'vendor/trollop/trollop'
-require 'remus'
+require 'lib/vendor/trollop/trollop'
+require 'lib/remus'
 
 
 options = Trollop::options do
-  version "Remus 0.9.0 (c) 2010 Rocky Meza, William Scales"
+  version "Remus 0.9.2 (c) 2010 Rocky Meza, William Scales"
   banner <<-EOS
 Remus is a syntax highlighter
 
@@ -18,28 +16,40 @@ EOS
   opt :filename, "A file to be colored, Remus will try to identify the language", :type => String
   opt :language, "The language of the code to be colored", :type => String
   opt :token_class, "The output format", :type => String
-  
+  opt :example, "Run with this flag to get example output, you can specify language and token_class", :default => false
 end
 
-if ! $stdin.tty? # if code is piped in
-  code = $stdin.read unless $stdin.tty? # grab code that is piped in
-  options[:language] = Remus.parse_shebang code if ! options[:language] # try to detect language
-elsif ! ARGV[0].nil?
-  code = ARGV[0]
-end
-Trollop::die :language, 'No language detected, please specify a language' if ( code && ! options[:language] )
+if options[:example]
+  puts( 'Remus Test Run')
 
-options.delete_if { |key,value| value.nil? } # remove empties
-defaults = { :token_class => :sh } # defaults hash
-options = defaults.merge options # merge options into defaults
+  lang = options[:language] || :html
+  token_class = options[:token_class] || :sh
 
-if code
-  
-  puts Remus.convert( code, options[:language], options )
-  
-elsif options[:filename]
-  
-  puts Remus.convert_from_file( options[:filename], options )
-  
-end
+  puts('--------------------- '+ Remus.classify(lang) )
+  start_time = Time.new.to_f
+  puts( Remus.convert_from_file( 'examples/example.'+ lang.to_s, :token_class => token_class ) )
+  end_time = Time.new.to_f
+  puts( 'Time: '+ (end_time - start_time).to_s)
+else
+  if ! $stdin.tty? # if code is piped in
+    code = $stdin.read unless $stdin.tty? # grab code that is piped in
+    options[:language] = Remus.parse_shebang code if ! options[:language] # try to detect language
+  elsif ! ARGV[0].nil?
+    code = ARGV[0]
+  end
+  Trollop::die :language, 'No language detected, please specify a language' if ( code && ! options[:language] )
 
+  options.delete_if { |key,value| value.nil? } # remove empties
+  defaults = { :token_class => :sh } # defaults hash
+  options = defaults.merge options # merge options into defaults
+
+  if code
+    
+    puts Remus.convert( code, options[:language], options )
+    
+  elsif options[:filename]
+    
+    puts Remus.convert_from_file( options[:filename], options )
+    
+  end
+end # options[:example]
