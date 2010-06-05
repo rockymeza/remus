@@ -1,4 +1,8 @@
-=== 0.9.0 / 2010-05-24
+== 0.9.1 / 2010-05-24
+* remove old files
+* fixes non README picking upedness
+
+== 0.9.0 / 2010-05-24
 
 * Birthday
 
