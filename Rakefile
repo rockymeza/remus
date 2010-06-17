@@ -5,6 +5,7 @@ require 'hoe'
 
 Hoe.plugin :git
 Hoe.plugin :rubyforge
+Hoe.plugin :gemcutter
 
 Hoe.spec 'remus' do
   developer 'Rocky Meza', 'rockymeza@gmail.com'
