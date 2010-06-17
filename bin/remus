@@ -24,12 +24,12 @@ if options[:example]
 
   lang = options[:language] || :html
   token_class = options[:token_class] || :sh
-
-  puts('--------------------- '+ Remus.classify(lang) )
+  
+  output = '--------------------- '+ Remus.classify(lang) +"\n"
   start_time = Time.new.to_f
-  puts( Remus.convert_from_file( 'examples/example.'+ lang.to_s, :token_class => token_class ) )
+  output << Remus.convert_from_file( 'examples/example.'+ lang.to_s, :token_class => token_class )
   end_time = Time.new.to_f
-  puts( 'Time: '+ (end_time - start_time).to_s)
+  output << 'Time: '+ (end_time - start_time).to_s
 else
   if ! $stdin.tty? # if code is piped in
     code = $stdin.read unless $stdin.tty? # grab code that is piped in
@@ -45,11 +45,16 @@ else
 
   if code
     
-    puts Remus.convert( code, options[:language], options )
+    output = Remus.convert( code, options[:language], options )
     
   elsif options[:filename]
     
-    puts Remus.convert_from_file( options[:filename], options )
+    output = Remus.convert_from_file( options[:filename], options )
     
   end
 end # options[:example]
+
+if output
+  ENV['LESS'] = 'FSRX'
+  IO.popen("/usr/bin/less","w") { |p| p.puts output}
+end
