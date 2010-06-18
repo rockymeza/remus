@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-require 'lib/vendor/trollop/trollop'
-require 'lib/remus'
+require File.dirname(__FILE__) + '/../lib/vendor/trollop/trollop'
+require File.dirname(__FILE__) + '/../lib/remus'
 
 
 options = Trollop::options do
