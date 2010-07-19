@@ -1,0 +1,98 @@
+= remus
+
+* http://github.com/touristofreality/remus
+
+== What are you, Remus?
+
+Remus is a syntax highlighter.  Remus was inspired by not wanting to do homework, the awesome Python syntax highlighter {Pygments}[http://pygments.org/], and it takes some ideas from the RubyGem {syntax}[http://syntax.rubyforge.org/].
+
+== Goods and Bads:
+
+=== Yays:
+
+* Can return in Terminal colors, or HTML spans.
+* Can understand complex things like PHP heredocs.
+* Can highlight embedded regions, like CSS in HTML.
+* Simple language definition syntax, lightweight Lexer files.
+
+=== Uh ohs:
+
+* Currently, there is no namespacing for tokens, which could lead to problems with languages like PHP, where it is embedded in HTML
+
+== How to use Remus?
+
+=== How to have Remus?
+
+    sudo gem install remus
+    
+=== What Remus needs?
+
+* hoe
+
+=== Remus in action:
+    
+
+    $ remus [options] [code]
+
+(options include language, and token class)
+
+alternatively: Remus can highlight a file
+
+    $ remus [options] -f path/to/file
+
+_or_: inside ruby
+
+    puts Remus.convert( string, language = :plain_text, options = {} )
+
+alternatively: inside ruby from a file
+
+    puts Remus.convert_from_file( filename, options )
+
+=== How to use Remus more ninja-ly?
+
+    $ echo 'This is to be highlighted' | remus [options]
+
+== How to make more awesome Remus?
+    
+=== Need doing:
+  
+* namespacing for languages.
+* maybe create a better callback syntax.
+* expand documentation.
+* expand HTML token class to include line numbers and stuff.
+
+=== Possible Doers:
+
+Pull source from github, try to follow other language examples. Please note that Remus aims at having the simplest end-user syntax.  I think something that is easy to use will be used more often.
+
+We are accepting languages and ideas.
+
+=== Messups and Wantings:
+
+* http://rubyforge.org/tracker/?atid=36957&group_id=9554&func=browse
+* http://rubyforge.org/tracker/?atid=36960&group_id=9554&func=browse
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2010 Rocky Meza and William Scales
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
