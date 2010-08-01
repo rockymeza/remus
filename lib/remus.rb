@@ -1,4 +1,4 @@
-$: << 'lib'
+$: << File.dirname(__FILE__)
 
 ##
 # Remus is a syntax highlighter.  It colors code like never before.
