@@ -21,7 +21,7 @@ class Remus
   require 'remus/lexer'
 
   # version
-  VERSION = '0.9.2'
+  VERSION = '0.9.3'
   
   
   # Takes string and converts it based on language
