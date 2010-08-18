@@ -10,7 +10,7 @@ class CommandLineRemus
       description 'A syntax highlighter'
       version '0.9.2'
       copyright '2010'
-      author ['Rocky Meza', 'William Scales']
+      author ['Rocky Meza']
       usage 'remus [options] [code]'
 
       string :filename, 'The File to be colored'
